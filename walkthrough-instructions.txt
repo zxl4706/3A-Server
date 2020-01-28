@@ -1,0 +1,79 @@
+3A Server Walkthrough Instructions
+
+Part I - Set up project locally
+1) Fork the https://github.com/tonethar/3A-Server-Start.git repository (Alternatively, click the "Use this template" button)
+2) Rename the repository to "3A-Server"
+3) Move to your PC desktop, and `git clone <url>` your forked repository
+4) Change directory into 3A-Server
+5) Create a package.json file with the default values: `npm init -y` - then manually edit package.json and add a value for the "description" key
+6) Download the shortid package: `npm install shortid`
+7) Launch the server with: `node ./src/server.js`
+8) Test the server in Chrome by heading to localhost:3000 & localhost:3000/random
+9) In package.json, add an "engines" key to package.json, give correct values for both "node" and "npm"
+10) In package.json, under the "scripts" key, change the "test" key value to "echo \"Tests Complete!\""
+11) In package.json, under the "scripts" key, add a "start" key with a value of "node ./src/server.js"
+12) In package.json, under the "scripts" key, add a "pretest" key, with a value of "eslint ./src --fix"
+13) Look over the installation instructions for eslint at: https://www.npmjs.com/package/eslint
+14) Download the eslint packages as a developer dependency: `npm install eslint --save-dev`
+15) Create an eslint config file with: `eslint --init`
+  - **you will have to answer questions - please follow along with Professor!**
+  - #1 - for "How would you like to use ESLint?" choose "To check syntax, find problems, and enforce code style"
+  - #2 for "What type of modules does your project use?" choose "CommonJS (require/exports)"
+  - #3 for Which framework does your project use? choose "None of these"
+  - #4 for "Where does your code run?" choose "Node"
+  - #5 for "How would you like to define a style for your project?" choose "Use a popular style guide"
+  - #6 for "Which style guide do you want to follow?" choose "Airbnb"
+  - #7 for "What format do you want your config file to be in?" choose "JSON"
+  - The go ahead and choose "Y" when it asks to install these dependencies
+16) Take a look at package.json to see the new "devDependencies" keys that were added
+17) `npm test` will run the "pretest" and the "test" key from package.json - be sure to fix any errors, or edit the .eslintrc.json config file to turn them into warnings (if that's the right thing to do)
+18) `npm start` will run the server. Then head to Chrome to be sure that both routes still work
+
+
+Part II - Push to your GitHub
+- create .gitignore and add node_modules to it
+- `git status`
+- `git add .`
+- `git status`
+- `git commit -m "First commit"`
+- `git status`
+- `git push`
+- `git status`
+- check 3A-Server repository on GitHub to make sure it's up to date
+
+Part III - CircleCI
+1) Head to https://circleci.com and set up an account if you need to
+2) Click "Add Projects" button (you may have to link to GitHub first)
+3) Choose 3A-Server and Click "Set up Project" button
+4) Download config.yml file and save at .circleci/config.yml
+5) Click "Start Building" button
+ - ERROR! Fix this by adding/commiting/pushing .circleci/config.yml to GitHub and try again
+ - After you push, check the "Pipelines" tab on CircleCI - your Project should be building automatically every time it is pushed
+ - ERROR! Fix this by updating the node version in config.yml, and then adding/commiting/pushing the updates again
+6) Check the Pipelines tab on CircleCI again. What is CircleCI doing? It's running `npm test` for you, and reporting on the results. This time it should pass the tests
+7) Head to your 3A-Server repository on GitHub, click on the green checkmark next to "Latest commit", that gives a link to your latest CircleCI build (the one you passed)
+
+Part IV - Heroku
+1) Head to https://dashboard.heroku.com/apps 
+2) Create a new app, and give it a meaningful name like "abc1234-3a-server" (where abc1234 is your ID)
+3) Choose "Deployment Method" GitHub
+4) Connect to your 3A-Server repository
+5) Click the "Automatic Deploys" button
+6) Check the "Wait for CI to pass before deploy" checkbox
+7) Click the "Deploy Branch" button to do a manual deploy (i.e. upload) to Heroku
+8) Click on the "Activity" tab to see the progress of your build
+9) Once it's finished, Click the "Open App" button to see your app in all it's glory. Test the / and the /random routes to be sure everything works.
+
+Part V - Test it out.
+1) Head back to your PC, and edit server.js so that the default HTML changes (maybe add some exclamation marks to the <h1>)
+2) git add, git commit, git push
+3) Head to https://circleci.com and check out the pipeline for the app - you should see it building
+4) When it's done and succeeded, head to Heroku, and open the "Activity" tab for the project to see the build in progress
+5) When that's done, reload the app's web page, you should see the changes
+
+Part VI - What happens with code errors?
+1) Edit server.js again, this time put a syntax error into your code (or an unused variable, or something else that will fail `npm test`
+2) git add, git commit, git push
+3) Head to https://circleci.com and check out the pipeline for the app - you should see it building - and then failing! Click the disclosure triangle to see why the build failed (or run `npm test` on the command line)
+4) There is no step 4, because the app won't deploy to Heroku
+5) On GitHub, the green checkmark is now a red x! :-(
